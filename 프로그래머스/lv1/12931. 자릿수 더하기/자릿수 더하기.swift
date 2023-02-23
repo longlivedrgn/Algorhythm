@@ -2,9 +2,9 @@ import Foundation
 
 func solution(_ n:Int) -> Int {
     var answer:Int = 0
-    let stringN = String(n)
-    for index in stringN.indices {
-        answer += Int(String(stringN[index]))!
+    let arr = Array(String(n))
+    return arr.reduce(0) {
+        Int(String($0))! + Int(String($1))!
     }
-    return answer
 }
+
