@@ -1,22 +1,24 @@
 import Foundation
 
-var nums = readLine()!.split(separator: " ").map {Int($0)!}
+let input = readLine()!.split(separator: " ").map { Int($0)! }
+let m = input[0]
+let n = input[1]
 
-func isPrime(num: Int) -> Bool {
-    if num < 4 {
-        return num == 1 ? false : true
-    }
+var isPrimeNumber = [Bool](repeating: true, count: n + 1)
+isPrimeNumber[1] = false
 
-    for number in 2...Int(sqrt(Double(num))) {
-        if num % number == 0 {
-            return false
+for i in 2..<Int(sqrt(Double(n)) + 1) {
+    if isPrimeNumber[i] {
+        var j = 2
+        while i * j <= n {
+            isPrimeNumber[i * j] = false
+            j += 1
         }
     }
-    return true
 }
 
-for number in nums[0]...nums[1] {
-    if isPrime(num: number) {
-        print(number)
+for i in m...n {
+    if isPrimeNumber[i] {
+        print(i)
     }
 }
