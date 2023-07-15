@@ -1,22 +1,19 @@
-let NM = readLine()!.split(separator: " ").map{ Int($0)! }
-let N = NM[0]
-let M = NM[1]
+var nums = readLine()!.split(separator: " ").map {Int(String($0))!}
+var selected = [Int]()
 
-var stack = [Int]()
-
-private func dfs(start: Int) {
-    if stack.count == M {
-        print(stack.map{ String($0) }.joined(separator:" "))
+func DFS(start: Int) {
+    if selected.count == nums[1] {
+        print(selected.map { String($0) }.joined(separator: " "))
         return
     }
 
-    for i in start..<N+1 {
-        if !stack.contains(i) {
-            stack.append(i)
-            dfs(start: i+1)
-            stack.removeLast()
+    for num in start..<nums[0]+1 {
+        if !selected.contains(num) {
+            selected.append(num)
+            DFS(start: num+1)
+            selected.removeLast()
         }
     }
 }
 
-dfs(start: 1)
+DFS(start: 1)
