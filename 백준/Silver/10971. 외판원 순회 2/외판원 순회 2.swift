@@ -36,6 +36,5 @@ for i in 0..<number {
     // 근데, 처음 시작을 방문했다고 해줘야함!
     visited[i] = true
     DFS(start: i, next: i, value: 0, count: 1)
-    visited[i] = false
 }
 print(priceSum)
