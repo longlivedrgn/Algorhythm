@@ -1,16 +1,25 @@
-import Foundation
+var input = Int(readLine()!)!
+var numbers = [1, 2, 3]
+var count = 0
 
-var num = Int(readLine()!)!
-var dp = Array(repeating: 0, count: 11)
-
-dp[1] = 1
-dp[2] = 2
-dp[3] = 4
-
-for i in 4...10 {
-    dp[i] = dp[i-1] + dp[i-2] + dp[i-3]
+func DFS(sum: Int, goal: Int) {
+    if sum > goal {
+        return
+    }
+    if goal == sum {
+        count += 1
+        return
+    }
+    for i in 0...2 {
+        DFS(sum: sum+numbers[i], goal: goal)
+    }
 }
-for _ in 0..<num {
-    let number = Int(readLine()!)!
-    print(dp[number])
+
+
+
+for _ in 0..<input {
+    var num = Int(readLine()!)!
+    DFS(sum: 0, goal: num)
+    print(count)
+    count = 0
 }
