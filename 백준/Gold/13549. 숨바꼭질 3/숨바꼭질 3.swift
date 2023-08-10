@@ -47,50 +47,29 @@ queue.append(subin)
 visited[subin] = true
 
 while !queue.isEmpty() {
-    let popped = queue.pop()!
-    if popped == brother {
-        print(count[popped])
+    let poppped = queue.pop()!
+    if poppped == brother {
+        print(count[poppped])
         break
     }
-
-    if 0 <= (popped-1) && (popped-1) <= 100000 {
-        if !visited[popped-1] {
-            visited[popped-1] = true
-            queue.append(popped-1)
-            count[popped-1] = count[popped] + 1
-        } else {
-            if count[popped-1] > count[popped] + 1 {
-                count[popped-1] = count[popped] + 1
-                queue.append(popped-1)
-            }
-        }
+    
+    if 0 <= (poppped*2) && (poppped*2) <= 100000 && !visited[poppped*2] {
+        visited[poppped*2] = true
+        queue.append(poppped*2)
+        count[poppped*2] = count[poppped]
+    }
+    
+    if 0 <= (poppped-1) && (poppped-1) <= 100000 && !visited[poppped-1] {
+        visited[poppped-1] = true
+        queue.append(poppped-1)
+        count[poppped-1] = count[poppped] + 1
     }
 
-    if 0 <= (popped+1) && (popped+1) <= 100000{
-        if !visited[popped+1] {
-            visited[popped+1] = true
-            queue.append(popped+1)
-            count[popped+1] = count[popped] + 1
-        } else {
-            if count[popped+1] > count[popped] + 1 {
-                count[popped+1] = count[popped] + 1
-                queue.append(popped+1)
-            }
-        }
-
+    if 0 <= (poppped+1) && (poppped+1) <= 100000 && !visited[poppped+1] {
+        visited[poppped+1] = true
+        queue.append(poppped+1)
+        count[poppped+1] = count[poppped] + 1
     }
 
-    if 0 <= (popped*2) && (popped*2) <= 100000 {
-        if !visited[popped*2] {
-            visited[popped*2] = true
-            queue.append(popped*2)
-            count[popped*2] = count[popped]
-        } else {
-            if count[popped*2] > count[popped] {
-                count[popped*2] = count[popped]
-                queue.append(popped*2)
-            }
-        }
 
-    }
 }
