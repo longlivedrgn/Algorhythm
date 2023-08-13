@@ -9,7 +9,7 @@ func DFS(depth: Int, column: Int) {
         count += 1
         return
     }
-// depth = 1 이고 두번째 줄 채웠고, 3번째 보고있다!.
+    // depth = 1 이고 두번째 줄 채웠고, 3번째 보고있다!.
     // k가 다음에 올 column이다!..
     for k in 0..<input {
         var isOk = true
@@ -37,13 +37,11 @@ func DFS(depth: Int, column: Int) {
             continue
         }
 
-        if visitedColumn[k] == false {
-            visitedColumn[k] = true
-            board[depth+1][k] = 1
-            DFS(depth: depth+1, column: k)
-            visitedColumn[k] = false
-            board[depth+1][k] = 0
-        }
+        visitedColumn[k] = true
+        board[depth+1][k] = 1
+        DFS(depth: depth+1, column: k)
+        visitedColumn[k] = false
+        board[depth+1][k] = 0
     }
 
 }
