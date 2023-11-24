@@ -1,54 +1,35 @@
 
 func solution(_ begin:String, _ target:String, _ words:[String]) -> Int {
-    var answer = Int.max
-    let isVisited = Array(repeating: false, count: words.count)
+    var queue = [(String, Int)]()
+    queue.append((begin, 0))
+    var answer = 0
+    var visited = Array(repeating: false, count: words.count)
 
-    func DFS(now: String, visited: [Bool], depth: Int) {
-        var tempVisited = visited
+    while !queue.isEmpty {
+        let popped = queue.removeFirst()
 
-        if now == target && depth != 0 {
-            answer = min(depth, answer)
-            return
+        if popped.0 == target {
+            answer = popped.1
+            break
         }
 
-        for (idx, word) in words.enumerated() {
-            if tempVisited[idx] == false && isOneCharOff(word, now) {
-                tempVisited[idx] = true
-                DFS(now: word, visited: tempVisited, depth: depth + 1)
-                tempVisited[idx] = false
+        for i in 0..<words.count {
+            if visited[i] == false {
+                var temp_count = 0
+
+                for (chr1, chr2) in zip(popped.0, words[i]) {
+                    if chr1 != chr2 {
+                        temp_count += 1
+                    }
+                }
+
+                if temp_count == 1 {
+                    queue.append((words[i], popped.1 + 1))
+                    visited[i] = true
+                }
             }
         }
     }
 
-    DFS(now: begin, visited: isVisited, depth: 0)
-    
-    if answer == Int.max {
-        return 0
-    } else {
-        return answer
-    }
-}
-
-func isOneCharOff(_ str1: String, _ str2: String) -> Bool {
-    // 두 문자열의 길이가 다르면 false를 반환
-    guard str1.count == str2.count else {
-        return false
-    }
-
-    var diffCount = 0
-
-    // 각 문자열의 문자를 비교하여 다른 문자 수를 세기
-    for (char1, char2) in zip(str1, str2) {
-        if char1 != char2 {
-            diffCount += 1
-        }
-
-        // 다른 문자가 2개 이상이면 false를 반환
-        if diffCount > 1 {
-            return false
-        }
-    }
-
-    // 다른 문자가 정확히 1개인 경우에만 true 반환
-    return diffCount == 1
+    return answer
 }
