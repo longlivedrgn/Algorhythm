@@ -1,23 +1,21 @@
+
 n, m = map(int, input().split())
-nums = list(map(int, input().split()))
-nums.sort()
-
-lst = []
+nums = sorted(list(map(int, input().split())))
 visited = [False] * n
-numSet = set()
+temp = []
 
-def DFS(depth):
-    if len(lst) == m:
-        temp = " ".join(map(str, lst))
-        if temp not in numSet:
-            print(temp)
-            numSet.add(temp)
+def dfs(depth):
+    if len(temp) == m:
+        print(*temp)
         return
+    remember_me = 0
     for i in range(depth, n):
-        if not visited[i]:
-            lst.append(nums[i])
+        if not visited[i] and remember_me != nums[i]:
             visited[i] = True
-            DFS(i+1)
-            lst.pop()
+            temp.append(nums[i])
+            remember_me = nums[i]
+            dfs(i+1)
             visited[i] = False
-DFS(0)
+            temp.pop()
+
+dfs(0)
