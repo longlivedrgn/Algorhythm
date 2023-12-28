@@ -8,14 +8,13 @@ def find_block(board, f):
     # empty_blocks = find_block(game_board, 0)
     # BFS를 돌려서 빈 공간이나, block 찾기
     empty_board_list = [] # game_board의 경우에는 0인 곳을, table의 경우에는 1을 여기에가다 담는다.
-    visited = [[False] * len(board) for _ in range(len(board))]
+    # visited = [[False] * len(board) for _ in range(len(board))]
 
     for i in range(len(board)):
         for j in range(len(board)):
-            if not visited[i][j] and board[i][j] == f: # 방문하지 않았고, 내가 원하는 값이라면?
+            if board[i][j] == f: # 방문하지 않았고, 내가 원하는 값이라면?
                 queue = deque([(i, j)])
                 board[i][j] = f ^ 1 # 1이면 0으로 0이면 1로 변경하기
-                visited[i][j] = True
                 lst = [(i, j)]
 
                 while queue:
@@ -27,7 +26,6 @@ def find_block(board, f):
                         elif board[nx][ny] == f: # 내가 가야되는 곳이라면?..
                             queue.append((nx, ny))
                             board[nx][ny] = f ^ 1 # 갔다가 찍어버리기!.. 갔던 곳이라고 딱 때려버리기!...
-                            visited[nx][ny] = True
                             lst.append((nx, ny))
                 empty_board_list.append(lst)
 
