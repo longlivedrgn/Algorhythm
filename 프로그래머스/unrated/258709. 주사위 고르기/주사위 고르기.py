@@ -1,13 +1,15 @@
 import itertools
 from itertools import product
-import bisect
 
 def solution(dice):
     dice_number = len(dice)
     pick_list = list(itertools.combinations([i for i in range(dice_number)], dice_number // 2))
 
     def calculate_sum_combinations(arr, indices):
-        combinations = product(*(arr[idx] for idx in indices))
+        dices = []
+        for idx in indices:
+            dices.append(arr[idx])
+        combinations = product(*dices)
         result = [sum(combo) for combo in combinations]
         return result
 
