@@ -6,19 +6,23 @@ dr = [0, 0, 1, -1]
 def solution(places):
     answer = []
     for place in places:
-        allPs = []
+        allPs = [] # 현재 모든 P들을 체크해서 넣어준다.
+        
         for r in range(5):
             for c in range(5):
                 if place[r][c] == "P":
                     allPs.append((r, c))
+                    
         flag = False # 만약 거리 두기가 지켜지지 않으면 바로 true로 변경!
 
-        for p in allPs:
-            visited = [[0 for _ in range(5)] for _ in range(5)] # 방문하면 1로 빵 찍기!..
-            distance = [[0 for _ in range(5)] for _ in range(5)] # 거기까지 가는 데 걸리는 거리~!
-            
+        # 모든 P에서 부터 BFS를 돌려본다!
+        for p in allPs:   
             if flag == True: # 만약 이미 거리두기가 지켜지지 않았으면 그냥 끝내기!..
                 break
+                
+            visited = [[0 for _ in range(5)] for _ in range(5)] # 방문하면 1로 빵 찍기!..
+            distance = [[0 for _ in range(5)] for _ in range(5)] # 거기까지 가는 데 걸리는 거리~!
+
             
             q = deque()
             q.append(p)
@@ -27,7 +31,7 @@ def solution(places):
             while q:
                 popped = q.popleft()
                 
-                if flag == True:
+                if flag == True: # 🚨 만약 이미 깨졌으면 여기서 끝내야된다!.. 안 그러면 밑에서 또 0을 더할 수가 있다.
                     break
 
                 for t in range(4):
@@ -39,8 +43,9 @@ def solution(places):
                     if 0 <= next_c < 5 and 0 <= next_r < 5 and visited[next_r][next_c] == 0:
                             if place[next_r][next_c] == "O": # 탁자이므로 갈 수 있다.
                                 visited[next_r][next_c] = 1 # 방문했다고 빵찍기!..
-                                distance[next_r][next_c] = distance[current_r][current_c] + 1
-                                q.append((next_r, next_c))
+                                distance[next_r][next_c] = distance[current_r][current_c] + 1 # 자신의 거리에서 +1을 해버린다.
+                                if distance[current_r][current_c] <= 2:
+                                    q.append((next_r, next_c))
                             if place[next_r][next_c] == "P": # 다음에 갈 곳이 P라면!!.. 
                                 if distance[current_r][current_c] <= 1: # 현재 내 거리에서 2안에 갈 수 있으므로 거리두기 위반!.. 즉, 2보다 작다면!..
                                     answer.append(0)
