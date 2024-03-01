@@ -1,67 +1,74 @@
 from collections import deque
 
-n, m = list(map(int, input().split())) # n -> row, m -> column
-graph = [list(map(int, input().split())) for _ in range(n)]
+inputs = list(map(int, input().split()))
+row = inputs[0]
+column = inputs[1]
 
-dr = [0, 0, -1, 1]
-dc = [1, -1, 0, 0]
+graph = []
+for _ in range(row):
+    graph.append(list(map(int, input().split())))
 
-# 먼저 얼음을 담는다!..
-ice = []
+dr = [-1, 1, 0, 0]
+dc = [0, 0, -1, 1]
 
-for r in range(n):
-    for c in range(m):
-        if graph[r][c]:
-            ice.append((r, c))
+year = -1
 
-year = 0
 
-def BFS(r, c):
-    q = deque()
-    q.append((r,c))
-    visited[r][c] = True
-    seaList = []
-
-    while q:
-        x, y = q.popleft()
-        sea = 0
-        for i in range(4):
-            nx = x + dc[i]
-            ny = y + dr[i]
-
-            if 0 <= nx < n and 0 <= ny < m:
-                if graph[nx][ny] == 0 : # 만약 해당 공간이 바다라면? 바다 갯수 +1 하기
-                    sea += 1
-                elif graph[nx][ny] != 0 and not visited[nx][ny]: # 만약 해당 공간이 바다가 아닌데, 방문도 안한 곳이라면?
-                    q.append((nx, ny)) # 그러면 해당 공간을 큐에 넣어버리기
-                    visited[nx][ny] = 1 # 그리고 방문했다고 빵 찍기!..
-
-        if sea > 0 :
-            seaList.append((x, y, sea)) # 없애야되는 갯수와 함께 넣어준다.
-    for x, y, sea in seaList:
-        graph[x][y] = max(0, graph[x][y] - sea)
-
-    return 1 # 해당 start에서 bfs를 돌렸으므로, start와 이어진 곳만 빙 돈다!..
-
-island_group = 0
-
-while ice:
-    visited = [[False] * m for _ in range(n)]
-    deleted_ice = [] # 0이 되어서 제거가된 ice 모음
-    island_group = 0 # 섬의 갯수!..
-
-    for r, c in ice:
-        if graph[r][c] != 0 and visited[r][c] == False: # 해당 공간이 바다가 아니고, 방문도 안했다면?
-            island_group += BFS(r, c) # 해당 공간을 기준으로 BFS를 돌리고, island 갯수를 하나 올린다.
-        if graph[r][c] == 0: # 바다가 되어버린 빙산을 체크한다.
-            deleted_ice.append((r, c))
-
-    if island_group > 1: # 만약 island 그룹이 2개 이상이면 year를 출력한다.
-        print(year)
-        break
-
-    ice = sorted(list(set(ice)-set(deleted_ice))) # 다시 남은 ice들을 계산한다.
+while True:
     year += 1
 
-if island_group < 2:
-    print(0)
+    visited = [[False for _ in range(column)] for _ in range(row)]
+
+    def BFS(start):
+        queue = deque()
+        queue.append(start)
+
+        while queue:
+            r, c = queue.popleft()
+
+            for i in range(4):
+                next_r = r + dr[i]
+                next_c = c + dc[i]
+
+                if 0 <= next_r < row and 0 <= next_c < column:
+                    if graph[next_r][next_c] != 0 and visited[next_r][next_c] == False:
+                        queue.append([next_r, next_c])
+                        visited[next_r][next_c] = True
+
+    island = 0
+    for r in range(row):
+        for c in range(column):
+            if graph[r][c] != 0 and visited[r][c] == False:
+                island += 1
+                BFS([r, c])
+
+    if island >= 2:
+        print(year)
+        break
+    if island == 0:
+        print(0)
+        break
+
+    # 싹 다 돌아서 어느 좌표에서 녹는 지를 담아두고, 한번에 다 녹여버린다.
+    # 그리고, 2개로 나누어져있는 지 판단하기
+    melting_list = []
+
+    # melting_list 채우기
+    for r in range(row):
+        for c in range(column):
+            if graph[r][c] != 0:
+                # 주변에 0이 몇 개인지를 확인한다.
+                count = 0
+
+                for i in range(4):
+                    next_r = r + dr[i]
+                    next_c = c + dc[i]
+
+                    if 0 <= next_r < row and 0 <= next_c < column:
+                        if graph[next_r][next_c] == 0:
+                            count += 1
+                melting_list.append([r, c, count])
+
+    # melting_list에 있는 거 싹 다 지우기
+    for melt in melting_list:
+        graph[melt[0]][melt[1]] = max(0, graph[melt[0]][melt[1]] - melt[2])
