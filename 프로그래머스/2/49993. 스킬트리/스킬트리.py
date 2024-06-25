@@ -9,16 +9,11 @@ def solution(skill, skill_trees):
 
     for tree in skill_trees:
         skill_queue = deque(skills)
-        isOk = True
         for m in tree:
-            if isOk == False:
-                break
             if m in skill_set:
                 popped = skill_queue.popleft()
-                print(popped)
                 if popped != m:
-                    isOk = False
+                    break
         else:
-            if isOk != False:
-                answer += 1
+            answer += 1
     return answer
