@@ -1,39 +1,44 @@
-def calculate(x):
-    splitted = x.split(":")
-    return int(splitted[0])*60 + int(splitted[1])
+def cal_time(time):
+    splitted = time.split(":")
+    return int(splitted[0]) * 60 + int(splitted[1])
 
-def replaces(symbols):
+def change(contents):
     replacement = {'C#':'1','D#':'2', 'F#':'3', 'G#':'4', 'A#':'5', 'B#': "6"}
+    
     for (k, v) in replacement.items():
-        symbols = symbols.replace(k,v)
-    return symbols
+        contents = contents.replace(k,v)
+    return contents
 
 def solution(m, musicinfos):
     answers = []
+
     for info in musicinfos:
         splitted = info.split(",")
-        start = calculate(splitted[0])
-        end = calculate(splitted[1])
-        long_time = end - start
+        start = splitted[0]
+        end = splitted[1]
         song = splitted[2]
-        syms = splitted[3]
+        con = splitted[3]
         
-        changed = replaces(syms)
-        
-        if long_time <= len(changed):
-            changed = changed[:long_time]
+        length = cal_time(end) - cal_time(start)
+        changed = change(con)
+        if length > len(changed):
+            ans, remain = divmod(length, len(changed))
+            changed = changed * ans
+            changed += changed[:remain]
         else:
-            (answer, surplus) = divmod(long_time, len(changed))
-            changed = changed * answer
-            changed += changed[:surplus]
-        
-        if replaces(m) in changed:
-            answers.append([long_time, song])
+            changed = changed[:length]
+        if change(m) in changed:
+            answers.append([length, song])
     if len(answers) != 0:
         answers = sorted(answers, key = lambda x: -x[0])        
         return answers[0][1]
     else:
         return "(None)"
+
+        
+        
+        
+
         
         
         
