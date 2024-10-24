@@ -1,33 +1,34 @@
 import heapq
 
-
-
-
 def solution(N, road, K):
-    answer = 0
+    INF = int(1e9)
     graph = [[] for _ in range(N+1)]
-    distance = [int(1e9)] * (N+1)
-
+    distance = [INF] * (N+1)
+    answer = 0
+    
     for r in road:
-        graph[r[0]].append((r[1], r[2]))
-        graph[r[1]].append((r[0], r[2]))
-    # [실행] 버튼을 누르면 출력 값을 볼 수 있습니다.
-    def dij(start):
-        q = []
-        heapq.heappush(q, (0, start))
-        distance[start] = 0
-        while q:
-            dist, now = heapq.heappop(q)
-            if distance[now] >= dist:
-                for i in graph[now]:
-                    cost = i[1] + distance[now]
-                    if cost < distance[i[0]]:
-                        distance[i[0]] = cost
-                        heapq.heappush(q, (cost, i[0]))
-    dij(1)
-
-    for m in range(1, N+1):
-        if distance[m] <= K:
+        start = r[0]
+        end = r[1]
+        cost = r[2]
+        graph[start].append((end, cost))
+        graph[end].append((start, cost))
+    
+    q = []
+    heapq.heappush(q, (0, 1))
+    distance[1] = 0
+    
+    while q:
+        dist, now = heapq.heappop(q)
+        
+        if dist <= distance[now]:
+            for i in graph[now]:
+                cost = dist + i[1]
+                
+                if cost < distance[i[0]]:
+                    distance[i[0]] = cost
+                    heapq.heappush(q, (cost, i[0]))
+                    
+    for d in distance:
+        if d <= K:
             answer += 1
-
     return answer
