@@ -1,29 +1,27 @@
 from collections import deque
 def solution(x, y, n):
-    answer = 0
-    arr = [0 for i in range(y+1)]
-    queue = deque()
-    queue.append(x)
-    
-    if x == y:
-        return 0
-    
-    while queue:
-        popped = queue.popleft()
-        next_1 = popped + n
-        next_2 = popped * 2
-        next_3 = popped * 3
+    q = deque()
+    q.append((x, 0))
+    visited = [ False for _ in range(1000002) ]
+    ans = -1
+    while q:
+        popped_x, count = q.popleft()
         
-        if next_1 <= y and (arr[next_1] > arr[popped]+1 or arr[next_1] == 0):
-            arr[next_1] = arr[popped]+1
-            queue.append(next_1)
-        if next_2 <= y and (arr[next_2] > arr[popped]+1 or arr[next_2] == 0):
-            arr[next_2] = arr[popped]+1
-            queue.append(next_2)
-        if next_3 <= y and (arr[next_3] > arr[popped]+1 or arr[next_3] == 0):
-            arr[next_3] = arr[popped]+1
-            queue.append(next_3)
-    if arr[y] == 0:
-        return -1
-    else:
-        return arr[y]
+        if popped_x == y:
+            ans = count
+            break
+        first_x = popped_x + n
+        second_x = popped_x * 2
+        third_x = popped_x * 3
+             
+        if first_x < 1000001 and not visited[first_x] :
+            visited[first_x] = True
+            q.append((first_x, count+1))
+        if second_x < 1000001 and not visited[second_x]:
+            visited[second_x] = True
+            q.append((second_x, count+1))
+        if third_x < 1000001 and not visited[third_x]:
+            visited[third_x] = True
+            q.append((third_x, count+1))
+    return ans
+        
