@@ -1,13 +1,12 @@
+from collections import deque
 def solution(order):
-    answer = 0
+    ans = 0
     i = 1
-    stack = []
-    while i != len(order) + 1:
-        stack.append(i)
-        while len(stack) != 0 and stack[-1] == order[answer]:
-            stack.pop()
-            answer += 1
+    q = deque()
+    while i < len(order) + 1:
+        q.append(i)
+        while len(q) != 0 and q[-1] == order[ans]:
+            q.pop()
+            ans += 1
         i += 1
-    return answer
-            
-    
+    return ans
