@@ -1,19 +1,18 @@
 from collections import deque
 def solution(skill, skill_trees):
     answer = 0
-    skill_set = set()
-    skills = []
-    for s in skill:
-        skill_set.add(s)
-        skills.append(s)
-
     for tree in skill_trees:
-        skill_queue = deque(skills)
-        for m in tree:
-            if m in skill_set:
-                popped = skill_queue.popleft()
-                if popped != m:
+        q = deque()
+        for s in skill:
+            q.append(s)
+        for t in tree:
+            if t in q:
+                if q[0] != t:
                     break
+                else:
+                    q.popleft()
         else:
             answer += 1
+                    
+            
     return answer
