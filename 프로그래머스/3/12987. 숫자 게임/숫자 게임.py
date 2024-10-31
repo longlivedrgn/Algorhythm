@@ -7,10 +7,9 @@ def solution(A, B):
     for a in A:
         for v in range(start_index, len(A)):
             if a < B[v]:
-                answer += 1
                 start_index += 1
+                answer += 1
                 break
             start_index += 1
-            if v == len(A)-1:
-                return answer
+            
     return answer
