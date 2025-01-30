@@ -1,6 +1,6 @@
 # [level 1] 강원도에 위치한 생산공장 목록 출력하기 - 131112 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131112) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131112?language=oracle) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 10월 09일 16:49:40
+2025년 01월 30일 21:36:37
 
 ### 문제 설명
 
