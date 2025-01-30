@@ -1,6 +1,6 @@
 # [level 1] 12세 이하인 여자 환자 목록 출력하기 - 132201 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/132201) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/132201?language=oracle) 
 
 ### 성능 요약
 
@@ -16,7 +16,7 @@ Empty
 
 ### 제출 일자
 
-2024년 10월 08일 21:52:02
+2025년 01월 30일 21:44:35
 
 ### 문제 설명
 
